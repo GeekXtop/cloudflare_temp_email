@@ -34,6 +34,8 @@
 
 ### Improvements
 
+- feat: |Github Actions| 后端部署支持通过仓库变量 `WORKER_DOMAINS_JSON` 覆盖 `BACKEND_TOML` 中的 `DOMAINS`，便于快速切换可用域名
+
 ## v1.4.0
 
 ### Features

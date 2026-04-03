@@ -22,32 +22,41 @@ Then go to the repository page `Settings` -> `Secrets and variables` -> `Actions
 
 - Common `secrets`
 
-   | Name                    | Description                                                                                                            |
-   | ----------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+   | Name                    | Description                                                                                                                       |
+   | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
    | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare Account ID, [Reference Documentation](https://developers.cloudflare.com/workers/wrangler/ci-cd/#cloudflare-account-id) |
-   | `CLOUDFLARE_API_TOKEN`  | Cloudflare API Token, [Reference Documentation](https://developers.cloudflare.com/workers/wrangler/ci-cd/#api-token)           |
+   | `CLOUDFLARE_API_TOKEN`  | Cloudflare API Token, [Reference Documentation](https://developers.cloudflare.com/workers/wrangler/ci-cd/#api-token)              |
 
 - Worker backend `secrets`
 
-   | Name                           | Description                                                                                                                                    |
-   | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-   | `BACKEND_TOML`                 | Backend configuration file, [see here](/en/guide/cli/worker.html#modify-wrangler-toml-configuration-file)                                      |
-   | `DEBUG_MODE`                   | (Optional) Whether to enable debug mode, set to `true` to enable. By default, worker deployment logs are not output to GitHub Actions page, enabling this will output them |
+   | Name                           | Description                                                                                                                                                                            |
+   | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | `BACKEND_TOML`                 | Backend configuration file, [see here](/en/guide/cli/worker.html#modify-wrangler-toml-configuration-file)                                                                              |
+   | `DEBUG_MODE`                   | (Optional) Whether to enable debug mode, set to `true` to enable. By default, worker deployment logs are not output to GitHub Actions page, enabling this will output them             |
    | `BACKEND_USE_MAIL_WASM_PARSER` | (Optional) Whether to use WASM to parse emails, set to `true` to enable. For features, refer to [Configure Worker to use WASM Email Parser](/en/guide/feature/mail_parser_wasm_worker) |
-   | `USE_WORKER_ASSETS`            | (Optional) Deploy Worker with frontend assets, set to `true` to enable                                                                         |
+   | `USE_WORKER_ASSETS`            | (Optional) Deploy Worker with frontend assets, set to `true` to enable                                                                                                                 |
+
+- Worker backend `variables` (optional)
+
+   | Name                  | Description                                                                                                                                                                          |
+   | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+   | `WORKER_DOMAINS_JSON` | (Optional) Overrides `DOMAINS` in `BACKEND_TOML`. Value must be a JSON string array, e.g. `["mail.example.com","test1.mail.example.com"]`. Useful for fast domain switch deployment. |
+
+> [!TIP] Tip
+> When `WORKER_DOMAINS_JSON` is set and non-empty, `Deploy Backend` will automatically override `DOMAINS` in `wrangler.toml` before deployment.
 
 - Pages frontend `secrets`
 
    > [!warning] Notice
    > If you choose to deploy Worker with frontend assets, these `secrets` are not required
 
-   | Name               | Description                                                                                                                                                                      |
-   | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-   | `FRONTEND_ENV`     | Frontend configuration file, please copy the content from `frontend/.env.example`, [and modify according to this guide](/en/guide/cli/pages.html)                               |
-   | `FRONTEND_NAME`    | The project name you created in Cloudflare Pages, can be created via [UI](https://temp-mail-docs.awsl.uk/en/guide/ui/pages.html) or [Command Line](https://temp-mail-docs.awsl.uk/en/guide/cli/pages.html) |
-   | `FRONTEND_BRANCH`  | (Optional) Branch for pages deployment, can be left unconfigured, defaults to `production`                                                                                      |
+   | Name               | Description                                                                                                                                                                                                            |
+   | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | `FRONTEND_ENV`     | Frontend configuration file, please copy the content from `frontend/.env.example`, [and modify according to this guide](/en/guide/cli/pages.html)                                                                      |
+   | `FRONTEND_NAME`    | The project name you created in Cloudflare Pages, can be created via [UI](https://temp-mail-docs.awsl.uk/en/guide/ui/pages.html) or [Command Line](https://temp-mail-docs.awsl.uk/en/guide/cli/pages.html)             |
+   | `FRONTEND_BRANCH`  | (Optional) Branch for pages deployment, can be left unconfigured, defaults to `production`                                                                                                                             |
    | `PAGE_TOML`        | (Optional) Required when using page functions to forward backend requests. Please copy the content from `pages/wrangler.toml` and modify the `service` field to your worker backend name according to actual situation |
-   | `TG_FRONTEND_NAME` | (Optional) The project name you created in Cloudflare Pages, same as `FRONTEND_NAME`. Fill this in if you need Telegram Mini App functionality                                  |
+   | `TG_FRONTEND_NAME` | (Optional) The project name you created in Cloudflare Pages, same as `FRONTEND_NAME`. Fill this in if you need Telegram Mini App functionality                                                                         |
 
 ### Deploy
 

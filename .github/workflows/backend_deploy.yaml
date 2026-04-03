@@ -34,7 +34,7 @@ jobs:
         run: |
           export use_worker_assets=${{ secrets.USE_WORKER_ASSETS }}
           export use_worker_assets_with_telegram=${{ secrets.USE_WORKER_ASSETS_WITH_TELEGRAM }}
-          
+
           if [ -n "$use_worker_assets" ]; then
             cd frontend/
             pnpm install --no-frozen-lockfile
@@ -50,11 +50,14 @@ jobs:
 
           export debug_mode=${{ secrets.DEBUG_MODE }}
           export use_mail_wasm_parser=${{ secrets.BACKEND_USE_MAIL_WASM_PARSER }}
-          
+
           cd worker/
-          # ✅ 修复核心：使用环境变量写入，避免 Shell 解析特殊字符
-          printf '%s\n' "$WRANGLER_TOML_CONTENT" > wrangler.toml
-          
+            wrangler_toml_content="$WRANGLER_TOML_CONTENT"
+            wrangler_toml_content="${wrangler_toml_content//\{\{WORKER_DOMAINS_JSON\}\}/$WORKER_DOMAINS_JSON}"
+
+            # ✅ 修复核心：使用环境变量写入，避免 Shell 解析特殊字符
+            printf '%s\n' "$wrangler_toml_content" > wrangler.toml
+
           pnpm install --no-frozen-lockfile
 
           if [ -n "$use_mail_wasm_parser" ]; then
@@ -79,5 +82,7 @@ jobs:
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          # ✅ 将 secret 映射到环境变量中
+          # ✅ 将 secret 映射到环境变量中，可包含 {{WORKER_DOMAINS_JSON}} 占位符
           WRANGLER_TOML_CONTENT: ${{ secrets.BACKEND_TOML }}
+          # 示例: ["mail.example.com","test1.mail.example.com"]
+          WORKER_DOMAINS_JSON: ${{ vars.WORKER_DOMAINS_JSON }}

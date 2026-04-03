@@ -36,6 +36,15 @@
    | `BACKEND_USE_MAIL_WASM_PARSER` | (可选) 是否使用 wasm 解析邮件，配置为 `true` 开启, 功能参考 [配置 worker 使用 wasm 解析邮件](/zh/guide/feature/mail_parser_wasm_worker) |
    | `USE_WORKER_ASSETS`            | (可选) 部署带有前端资源的 Worker, 配置为 `true` 开启                                                                                    |
 
+- worker 后端 `variables`（可选）
+
+   | 名称                  | 说明                                                                                                                                              |
+   | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | `WORKER_DOMAINS_JSON` | (可选) 用于覆盖 `BACKEND_TOML` 中的 `DOMAINS`，值为 JSON 字符串数组，例如 `["mail.example.com","test1.mail.example.com"]`。适合快速切换域名发布。 |
+
+> [!TIP] 提示
+> 当 `WORKER_DOMAINS_JSON` 已配置且非空时，`Deploy Backend` 会在部署前自动覆盖 `wrangler.toml` 里的 `DOMAINS`。
+
 - pages 前端 `secrets`
 
    > [!warning] 注意
@@ -46,7 +55,7 @@
    | `FRONTEND_ENV`     | 前端配置文件，请复制 `frontend/.env.example` 的内容，[并参考此处修改](/zh/guide/cli/pages.html)                                                                                           |
    | `FRONTEND_NAME`    | 你在 Cloudflare Pages 创建的项目名称，可通过 [用户界面](https://temp-mail-docs.awsl.uk/zh/guide/ui/pages.html) 或者 [命令行](https://temp-mail-docs.awsl.uk/zh/guide/cli/pages.html) 创建 |
    | `FRONTEND_BRANCH`  | (可选) pages 部署的分支，可不配置，默认 `production`                                                                                                                                      |
-   | `PAGE_TOML`        | (可选) 使用 page functions 转发后端请求时需要配置，请复制 `pages/wrangler.toml` 的内容，并根据实际情况修改 `service` 字段为你的 worker 后端名称                                             |
+   | `PAGE_TOML`        | (可选) 使用 page functions 转发后端请求时需要配置，请复制 `pages/wrangler.toml` 的内容，并根据实际情况修改 `service` 字段为你的 worker 后端名称                                           |
    | `TG_FRONTEND_NAME` | (可选) 你在 Cloudflare Pages 创建的项目名称，同 `FRONTEND_NAME`，如果需要 Telegram Mini App 功能，请填写                                                                                  |
 
 ### 部署

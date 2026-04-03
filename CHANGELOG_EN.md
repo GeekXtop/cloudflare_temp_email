@@ -34,6 +34,8 @@
 
 ### Improvements
 
+- feat: |GitHub Actions| Backend deploy now supports overriding `DOMAINS` in `BACKEND_TOML` via repository variable `WORKER_DOMAINS_JSON` for faster domain switch rollout
+
 ## v1.4.0
 
 ### Features
