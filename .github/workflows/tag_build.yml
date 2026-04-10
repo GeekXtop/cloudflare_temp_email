@@ -84,6 +84,11 @@ jobs:
       - name: cp wrangler.toml
         run: cd worker && cp wrangler.toml.template wrangler.toml
 
+      - name: Inject WORKER_DOMAINS_JSON
+        run: |
+          cd worker
+          sed -i "s|{{WORKER_DOMAINS_JSON}}|${{ secrets.WORKER_DOMAINS_JSON }}|g" wrangler.toml
+
       - name: Build Backend
         run: cd worker && pnpm install --no-frozen-lockfile && pnpm build
 
